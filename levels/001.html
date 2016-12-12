@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Level 1</title>
+    <style>
+        canvas {
+          height: 100vh;
+          width: 100vw;
+          display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        function draw(color) {
+            var c = document.getElementById("canvas");
+            var ctx = c.getContext("2d");
+            var width = c.width;
+            var height = c.height;
+
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = color;
+
+            for (var i = 1; i < 4; i++) {
+                ctx.beginPath();
+                ctx.moveTo(width * i / 4, height * 0.2);
+                ctx.lineTo(width * i / 4, height * 0.8);
+                ctx.stroke();
+            }
+        }
+
+        var clicks = 0;
+        var lastClick = 0;
+
+        function onEvent(name, params) {
+            if (name == 'touch') {
+                var now = new Date().getTime() / 1000;
+                if (now - lastClick < 1) {
+                    clicks++;
+                    if (clicks == 3) {
+                        webkit.messageHandlers.levelSolved.postMessage("Good work");
+                    }
+                } else {
+                    clicks = 1;
+                }
+                lastClick = now;
+            }
+            return "hi";
+        }
+
+        draw('#ff0000');
+    </script>
+
+</body>
+
+</html>
